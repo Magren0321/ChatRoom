@@ -1,4 +1,5 @@
 .wrap{
-    width: 100vw;
+    height: 200px;
+    background-color: #e66465;
     background: linear-gradient(#e66465, #9198e5);
 }

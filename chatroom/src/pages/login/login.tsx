@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import './login.less'
+import './login.css'
 
 export default class login extends Component {
     render() {
         return (
-            <div className='wrap'>
-                
-            </div>
+            <main className='wrap'>
+                111
+            </main>
         )
     }
 }
