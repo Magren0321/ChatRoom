@@ -1,11 +1,16 @@
 import React, { Component } from 'react'
-import './login.css'
+import { Input , Button} from 'antd';
+import './login.less'
 
 export default class login extends Component {
     render() {
         return (
             <main className='wrap'>
-                111
+                <div className='login'>
+                    <h1>ChatRoom</h1>
+                    <Input className='input' placeholder="Name" />
+                    <Button>Enter</Button>
+                </div>
             </main>
         )
     }

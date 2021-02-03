@@ -1,0 +1,5 @@
+.flex(@justify-content: center, @align-items: center) when (iskeyword(@justify-content)), (iskeyword(@align-items)){
+    display: flex;
+    justify-content: @justify-content;
+    align-items: @align-items;
+}

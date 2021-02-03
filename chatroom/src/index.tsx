@@ -22,7 +22,6 @@ const render = (Component: any) => {
     document.getElementById('root'),
   )
 }
-
 render(Route);
 
 // Webpack Hot Module Replacement API
