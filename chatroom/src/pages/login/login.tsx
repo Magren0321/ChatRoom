@@ -1,19 +1,21 @@
 import React, { Component } from 'react'
 import { Input , Button , notification} from 'antd';
-import './login.less'
-import { connect } from 'react-redux';
+import { connect, DefaultRootState } from 'react-redux';
 import { saveUsername } from '../../store/login/action';
+import './login.less'
 
 
 // 创建类型接口
 interface IProps {
     saveUsername: (value: string) => void;
+    state: DefaultRootState
 }
 
 class login extends Component<IProps> {
      
     state = {
-        name:''
+        name:'',
+        loading:false,
     }
     //当前input的值改变，赋值给name
     inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +30,6 @@ class login extends Component<IProps> {
         if(!nameRegex.test(this.state.name)){
             this.openNotification();
         }else{
-           console.log(this.props);
            this.props.saveUsername(this.state.name);
         }
     }
@@ -40,6 +41,18 @@ class login extends Component<IProps> {
             '用户名不可包含空格或者特殊字符',
         });
     };
+    //让按钮进入加载模式，3s
+    enterLoading = () => {
+        this.setState({
+            loading: true
+        })
+        setTimeout(() => {
+            this.handleClick();
+            this.setState({
+                loading: false
+            })
+        }, 3000);
+    };
     
 
     render() {
@@ -48,16 +61,15 @@ class login extends Component<IProps> {
                 <div className='login'>
                     <h1>ChatRoom</h1>
                     <Input className='input' placeholder="UserName" size="large" onChange={(e)=>this.inputChange(e)}/>
-                    <Button className='btn' onClick={this.handleClick}>Enter</Button>
+                    <Button className='btn' onClick={this.enterLoading} loading={this.state.loading}>Enter</Button>
                 </div>
             </main>
         )
     }
 }
 
-
 export default connect(state => ({
-    
+    state:state //将reducer的state赋值给props的state，可通过this.props.state找到store中的值
   }), {
     saveUsername
   })(login);

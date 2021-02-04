@@ -1,7 +1,7 @@
 import * as action from './action';
 import * as type  from './action-type';
 
-let user ={
+const user ={
     name:''
 }
 
