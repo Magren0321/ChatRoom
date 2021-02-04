@@ -1,4 +1,5 @@
 @import "../../style/base.less";
+@import '~antd/dist/antd.css';
 
 .wrap{
     background: linear-gradient(#e66465, #9198e5);
@@ -7,12 +8,20 @@
     .login{
         background-color: #fff;
         width: 90%;
-        height: 45vh;
+        height: 40vh;
         border-radius: 15px;
         max-width: 250px;
         max-height: 350px;
+        .flex(center,space-around);
+        flex-direction: column;
         h1{
             text-align: center;
+        }
+        .input{
+            width: 80%;
+        }
+        .btn{
+            width: 50%;
         }
     }
 }

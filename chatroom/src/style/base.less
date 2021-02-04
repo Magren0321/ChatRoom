@@ -1,5 +1,18 @@
-.flex(@justify-content: center, @align-items: center) when (iskeyword(@justify-content)), (iskeyword(@align-items)){
+.flex(@align-items: center,@justify-content: center){
     display: flex;
     justify-content: @justify-content;
     align-items: @align-items;
 }
+
+.positionCenter(@position: absolute){
+    position: @position;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+  }
+
+  .font(@font-size, @color: #333, @text-align: left){
+    font-size: @font-size;
+    color: @color;
+    text-align: @text-align;
+  }
