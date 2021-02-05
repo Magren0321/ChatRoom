@@ -1,21 +1,34 @@
 import React, { Component } from 'react'
 import { Input , Button , notification} from 'antd';
 import { connect, DefaultRootState } from 'react-redux';
-import { saveUsername } from '../../store/login/action';
+import { saveUserinfo } from '../../store/user/action';
+import { RouteComponentProps } from 'react-router-dom';
+import api from '../../api/index';
 import './login.less'
 
 
 // 创建类型接口
-interface IProps {
-    saveUsername: (value: string) => void;
-    state: DefaultRootState
+interface IProps extends RouteComponentProps{
+    saveUserinfo: (name: string,id: string) => void;
+    state: DefaultRootState;
 }
 
 class login extends Component<IProps> {
      
     state = {
         name:'',
+        id:'',
         loading:false,
+    }
+    //当localStorage存储过用户名的时候直接跳转到选择房间页面
+    constructor(props: IProps | Readonly<IProps>){
+        super(props);
+        const name = localStorage.getItem('name');
+        const id = localStorage.getItem('id');
+        if(name&&id){
+            this.props.saveUserinfo(name,id);
+            this.toPageSelect();
+        }
     }
     //当前input的值改变，赋值给name
     inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +43,12 @@ class login extends Component<IProps> {
         if(!nameRegex.test(this.state.name)){
             this.openNotification();
         }else{
-           this.props.saveUsername(this.state.name);
+           api.addUser(this.state.name).then(res=>{
+               this.props.saveUserinfo(res.data.name,res.data._id);
+               localStorage.setItem('name',res.data.name);
+               localStorage.setItem('id',res.data._id);
+               this.toPageSelect();
+           })
         }
     }
     //弹出错误提醒
@@ -53,7 +71,10 @@ class login extends Component<IProps> {
             })
         }, 3000);
     };
-    
+    //跳转到房间选择页面
+    toPageSelect = () => {
+        this.props.history.replace('/selectroom');
+    }
 
     render() {
         return (
@@ -71,6 +92,6 @@ class login extends Component<IProps> {
 export default connect(state => ({
     state:state //将reducer的state赋值给props的state，可通过this.props.state找到store中的值
   }), {
-    saveUsername
+    saveUserinfo
   })(login);
   

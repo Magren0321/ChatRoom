@@ -1,26 +1,30 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+import createError from 'http-errors';
+import express from 'express';
+import router from './routes/index'
+import bodyParser from 'body-parser';
+import db from './mongodb/db';
 
 var app = express();
+//使用body-parser中间件
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.all('*', (req, res, next) => {
+  const { origin, Origin, referer, Referer } = req.headers;
+  const allowOrigin = origin || Origin || referer || Referer || '*';
+	res.header("Access-Control-Allow-Origin", allowOrigin);
+	res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
+	res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+  res.header("Access-Control-Allow-Credentials", true); //可以带cookies
+	res.header("X-Powered-By", 'Express');
+	if (req.method == 'OPTIONS') {
+  	res.sendStatus(200);
+	} else {
+    next();
+	}
+});
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+router(app);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -35,7 +39,10 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.json({ //只是用json服务，将render改成json
+    message: err.message,
+    error: err
+  });
 });
 
 module.exports = app;

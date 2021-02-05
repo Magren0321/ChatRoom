@@ -1,0 +1,1 @@
+export const addUser = "/addUser"; //添加用户
