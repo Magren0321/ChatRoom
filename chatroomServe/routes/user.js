@@ -15,9 +15,4 @@ router.post('/addUser?:name',(req,res) => {
     });
 })
 
-//获取用户数量
-router.get('/userQuantity',(res,req) => {
-
-})
-
 module.exports = router;

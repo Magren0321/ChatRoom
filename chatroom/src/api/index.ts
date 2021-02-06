@@ -12,6 +12,25 @@ const request  = {
             method: 'post'
         })
     },
+    /**
+     * 获取房间列表
+     */
+    getRoomList(){
+        return axios({
+            url: config.getRoomList,
+            method: 'get'
+        })
+    },
+    /**
+     * 创建房间
+     * @param name 房间名称
+     */
+    createRoom(name: string){
+        return axios({
+            url: config.createRoom+'?name='+name,
+            method: 'post'
+        })
+    },
 }
 
 export default request;
