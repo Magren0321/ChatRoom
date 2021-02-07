@@ -3,5 +3,31 @@
 
 .selectWrap{
     background: linear-gradient(#e66465, #9198e5);
-    .flex(center,space-around);
+    height: 100vh;
+    .flex(flex-start,center);
+    .selectRoom{
+        margin-top: 30px;
+        border-radius: 10px;
+        background-color: #fff;
+        width: 90%;
+        max-width: 700px;
+        .listWrap{
+            padding: 15px 0 15px 0;
+            .detail{
+                .flex(center,flex-start);
+                background-color: #EFEEEE;
+                padding: 10px;
+                p{
+                    margin-left: 10px;
+                }
+            }
+            .roomlst{
+                p{
+                    color: #b1afaf;
+                }
+                min-height: 300px;
+                .flex;
+            }
+        }
+    }
 }

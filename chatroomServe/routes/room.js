@@ -16,7 +16,9 @@ router.post('/createRoom?:name',(req,res) => {
 //获取房间列表
 router.get('/allRoom',(req,res) => {
     room.find().then(roomList => {
-        res.json(roomList);
+        const room = {}
+        room.list = roomList;
+        res.json(room);
     })
 })
 

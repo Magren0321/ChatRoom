@@ -7,10 +7,10 @@ const user ={
 }
 
 // 用户名称
-export const saveUser = (state = user, action: action.saveUser) => {
+export const User = (state = user, action: action.typeAction) => {
     switch (action.type) {
         case type.USER:
-            return {...state , name:action.name , id: action.id }
+            return {...state , name:action.name , id: action.id };
         default:
             return state
       }

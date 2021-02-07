@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Input , Button , notification} from 'antd';
-import { connect, DefaultRootState } from 'react-redux';
+import { connect} from 'react-redux';
 import { saveUserinfo } from '../../store/user/action';
 import { RouteComponentProps } from 'react-router-dom';
 import api from '../../api/index';
@@ -10,9 +10,14 @@ import './login.less'
 // 创建类型接口
 interface IProps extends RouteComponentProps{
     saveUserinfo: (name: string,id: string) => void;
-    state: DefaultRootState;
+    state: user;
 }
-
+interface user {
+    User:{
+        name: string,
+        id: string
+    }
+}
 class login extends Component<IProps> {
      
     state = {
@@ -42,7 +47,12 @@ class login extends Component<IProps> {
         const nameRegex = new RegExp(/^[\u4e00-\u9fa5_a-zA-Z0-9]+$/)
         if(!nameRegex.test(this.state.name)){
             this.openNotification();
+            return;
         }else{
+            if(this.state.name.length>10){
+                this.openNotification();
+                return;
+            }
            api.addUser(this.state.name).then(res=>{
                this.props.saveUserinfo(res.data.name,res.data._id);
                localStorage.setItem('name',res.data.name);
@@ -56,7 +66,7 @@ class login extends Component<IProps> {
         notification['error']({
           message: 'UserName不可用',
           description:
-            '用户名不可包含空格或者特殊字符',
+            '用户名不规范，可能包含空格或特殊字符',
         });
     };
     //让按钮进入加载模式，3s
@@ -81,7 +91,7 @@ class login extends Component<IProps> {
             <main className='wrap'>
                 <div className='login'>
                     <h1>ChatRoom</h1>
-                    <Input className='input' placeholder="UserName" size="large" onChange={(e)=>this.inputChange(e)}/>
+                    <Input className='input' placeholder="用户名（少于10个字符）" size="large" onChange={(e)=>this.inputChange(e)}/>
                     <Button className='btn' onClick={this.enterLoading} loading={this.state.loading}>Enter</Button>
                 </div>
             </main>
@@ -89,9 +99,8 @@ class login extends Component<IProps> {
     }
 }
 
-export default connect(state => ({
-    state:state //将reducer的state赋值给props的state，可通过this.props.state找到store中的值
+export default connect((state: {User: user}) => ({
+    state:state.User
   }), {
     saveUserinfo
   })(login);
-  
