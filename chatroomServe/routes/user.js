@@ -15,4 +15,11 @@ router.post('/addUser?:name',(req,res) => {
     });
 })
 
+//删除用户
+router.post('/deleteUser?:id',(req,res) => {
+    user.findOneAndRemove({_id:req.query.id}).then(data => {
+      res.json(data);
+    });
+})
+
 module.exports = router;

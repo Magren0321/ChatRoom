@@ -31,6 +31,16 @@ const request  = {
             method: 'post'
         })
     },
+    /**
+     * 删除用户
+     * @param id 删除的用户id
+     */
+    deleteUser(id: string){
+        return axios({
+            url: config.deleteUser+'?id='+id,
+            method: 'post'
+        })
+    }
 }
 
 export default request;

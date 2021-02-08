@@ -13,10 +13,8 @@ interface IProps extends RouteComponentProps{
     state: user;
 }
 interface user {
-    User:{
-        name: string,
-        id: string
-    }
+    name: string,
+    id: string
 }
 class login extends Component<IProps> {
      

@@ -11,10 +11,13 @@ interface IProps extends RouteComponentProps{
     state: user;
 }
 interface user {
-    User:{
-        name: string,
-        id: string
-    }
+    name: string,
+    id: string
+}
+interface roomItem{
+    num: number,
+    roomName: string,
+    _id: string
 }
 class selectRoom extends Component<IProps> {
     state = {
@@ -44,7 +47,7 @@ class selectRoom extends Component<IProps> {
     }
     //创建房间
     createRoom = () => {
-        if(this.state.roomName.length>20){
+        if(this.state.roomName.length>10){
             this.openNotification();
             return;
         }else{
@@ -70,18 +73,17 @@ class selectRoom extends Component<IProps> {
             this.setState({
                 roomList: res.data.list,
                 roomNum: res.data.list.length,
-                userNUm: num
+                userNum: num
             })
+            if(this.state.roomList.length>0){
+                this.setState({
+                    display: false
+                })
+            }
         })
-        if(this.state.roomList.length!==0){
-            this.setState({
-                display: false
-            })
-        }
     }
     //关闭/打开创建房间窗口
     changeModal = (isShow: boolean) => {
-        console.log(this.props.state);
         this.setState({
             isModalVisible: isShow
         });
@@ -93,37 +95,58 @@ class selectRoom extends Component<IProps> {
         });
     }
     //弹出错误提醒
-    openNotification= ()  => {
+    openNotification = ()  => {
         notification['error']({
           message: '房间名称不可用',
           description:
             '名称不规范，可能包含空格或特殊字符',
         });
     };
-
+    //登出
+    signOut = () => {
+        this.deleteUser(this.props.state.id);
+        localStorage.clear();
+        this.props.saveUserinfo('','');
+        this.toPageLogin();
+    }
+    //登出的时候从数据库删除该用户
+    deleteUser = (id: string) => {
+        api.deleteUser(id).then( res =>{
+            console.log(res);
+        })
+    }
     render() {
         return (
             <main className='selectWrap'>
                <Modal title="创建房间" visible={this.state.isModalVisible} onOk={this.createRoom} onCancel={()=>this.changeModal(false)}>
-                    <Input className='input' placeholder="房名（最长长度20个字符）" size="large" onChange={(e)=>this.inputChange(e)}/>   
+                    <Input className='input' placeholder="房名（最长长度10个字符）" size="large" onChange={(e)=>this.inputChange(e)}/>   
                </Modal>
                <div className='selectRoom'>
                    <div className = 'listWrap'>
                        <div className='detail'>
                          <Button  shape="round" onClick={()=>this.changeModal(true)}>创建房间</Button>
                          <p>{this.state.roomNum} rooms - {this.state.userNum} users</p>
+                         <Button danger={true} onClick={this.signOut} className='signupBtn'>登出</Button>
                         </div>
                         <div className='roomlst'>
+
                             {this.state.display?(
-                                <p>暂无房间</p>
+                                <div className='noRoom'><p>暂无房间</p></div>
                             ): null}
+
+                            {this.state.roomList.map((item: roomItem) => {
+                                return <div key={item._id} className='roomitem'>
+                                    <p className='roomname'>{item.roomName}</p>
+                                    <p className='roomnum'>{item.num}人</p>
+                                </div>
+                            })}
+
                         </div>
                    </div>
-                    
                </div>
                <div className='userInfo'>
                    <p>{this.state.userName}</p>
-                   <Button>登出</Button>
+                   <Button danger={true} onClick={this.signOut}>登出</Button>
                </div>
             </main>
         )
