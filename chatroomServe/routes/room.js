@@ -7,7 +7,7 @@ router.post('/createRoom?:name',(req,res) => {
     const roomInfo = {};
     if(req.query.name){
         roomInfo.roomName = req.query.name;
-        roomInfo.num = 1;
+        roomInfo.num = 0;
     }
     new room(roomInfo).save().then(roomInfo => {
       res.json(roomInfo);

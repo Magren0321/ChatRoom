@@ -2,12 +2,14 @@ import createError from 'http-errors';
 import express from 'express';
 import router from './routes/index'
 import bodyParser from 'body-parser';
+import socket from './io/socket';
 import db from './mongodb/db';
 
 var app = express();
 //使用body-parser中间件
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
+
 
 app.all('*', (req, res, next) => {
   const { origin, Origin, referer, Referer } = req.headers;
@@ -25,6 +27,9 @@ app.all('*', (req, res, next) => {
 });
 
 router(app);
+socket(app);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

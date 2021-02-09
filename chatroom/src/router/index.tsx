@@ -13,7 +13,7 @@ export default class RouteConfig extends Component{
       <HashRouter>
         <Switch>
           <Route path="/" exact component={login} />
-          <Route path="/chatroom" component={chatRoom} />
+          <Route path="/chatroom/:roomId" component={chatRoom} />
           <Route path='/selectroom' component={selectRoom} />
           <Redirect to="/" />
         </Switch>

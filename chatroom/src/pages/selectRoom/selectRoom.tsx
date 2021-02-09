@@ -58,7 +58,7 @@ class selectRoom extends Component<IProps> {
                 return;
             }
             api.createRoom(this.state.roomName).then( res =>{
-                console.log(res);
+                this.toRoom(res.data._id);
             })
             this.changeModal(false);
         }
@@ -115,6 +115,10 @@ class selectRoom extends Component<IProps> {
             console.log(res);
         })
     }
+    //跳转房间
+    toRoom = (id: string) => {
+        this.props.history.push('/chatroom/'+id);
+    }
     render() {
         return (
             <main className='selectWrap'>
@@ -135,7 +139,7 @@ class selectRoom extends Component<IProps> {
                             ): null}
 
                             {this.state.roomList.map((item: roomItem) => {
-                                return <div key={item._id} className='roomitem'>
+                                return <div key={item._id} className='roomitem' onClick={()=>this.toRoom(item._id)}>
                                     <p className='roomname'>{item.roomName}</p>
                                     <p className='roomnum'>{item.num}人</p>
                                 </div>

@@ -1,0 +1,62 @@
+@import "../../style/base.less";
+@import '~antd/dist/antd.css';
+
+.chatWrap{
+    height: 100vh;
+    background-color: #000;
+    .flex(center,flex-start);
+    flex-direction: column; 
+    .postWrap{
+        position: absolute;
+        bottom: 0;
+        .flex(flex-starrt,center);
+        height: 118px;
+        width: 100%;
+        background-color:#000;
+        .inputWrap{
+            text-align: center;
+            width: 80%;
+            .control{
+                position: relative;
+                width: 100%;
+                .postBtn{
+                    margin-top: 10px;
+                    width: 60%;
+                    max-width: 300px;
+                }
+                .signUpBtn{
+                    position: absolute;
+                    right: 0;
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
+    .chatList{
+        width: 80%;
+        margin-bottom: 118px;
+        p{
+            color: #fff;
+        }
+        div{
+            padding: 10px;
+        }
+    }
+}
+
+.me{
+    width: 100%;
+    text-align: right;
+}
+.other{
+    width: 100%;
+    text-align: left;
+}
+
+.toast{
+    width: 100%;
+    text-align: center;
+    .userName{
+        display: none;
+    }
+}
