@@ -117,7 +117,7 @@ class selectRoom extends Component<IProps> {
     }
     //跳转房间
     toRoom = (id: string) => {
-        this.props.history.push('/chatroom/'+id);
+        this.props.history.replace('/chatroom/'+id);
     }
     render() {
         return (

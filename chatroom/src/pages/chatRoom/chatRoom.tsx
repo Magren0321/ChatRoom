@@ -44,15 +44,20 @@ class chatRoom extends Component<IProps> {
     }
     
     componentDidMount = () => {
-        const name = localStorage.getItem('name');
-        const id = localStorage.getItem('id');
-        if(name&&id){
-            this.props.saveUserinfo(name,id);
-            this.setState({userName:name});
+        if(this.props.state.name!==''&&this.props.state.id!==''){
             this.socketOn();
+            window.addEventListener("beforeunload", this.handleWindowBeforeUnload);
         }else{
             this.toPageLogin()
         }
+    }
+    //刷新页面或者关闭页面的时候触发，由于刷新页面会让redux的值重置，所以按照上面的componentDidMount会返回登录页面
+    handleWindowBeforeUnload = () => {
+        socket.emit('leave',{
+            roomId:this.props.match.params.roomId,
+            userName:this.props.state.name,
+            userId:this.props.state.id,
+        })
     }
     //跳转到登录页
     toPageLogin = () => {
@@ -62,7 +67,7 @@ class chatRoom extends Component<IProps> {
         //监听信息
         socket.on('chat_message',(data: mesItem)=>{
             this.setState({
-                message:[...this.state.message,data]
+                message:[data,...this.state.message]
             });
            
         })
@@ -106,6 +111,11 @@ class chatRoom extends Component<IProps> {
             msg:''
         })
     }
+    //离开聊天室
+    leaveRoom = () => {
+        window.location.reload(); //让页面刷新，达到跳转回选择房间页面的目的
+    }
+
     render() {
         let model = 'other'
         return (
@@ -142,7 +152,7 @@ class chatRoom extends Component<IProps> {
                          /> 
                         <div className='control'>
                             <Button shape="round" size='small' className='postBtn' onClick={this.postMsg}>POST</Button>
-                            <Button  size='small' danger={true} className='signUpBtn'>登出</Button>
+                            <Button  size='small' danger={true} className='signUpBtn' onClick={this.leaveRoom}>登出</Button>
                         </div>
                     </div>
                 </div>

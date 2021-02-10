@@ -61,6 +61,13 @@ export default app => {
          */
         socket.on('leave', data=>{
             room.findOne({_id:data.roomId}).then(res=>{
+                //假如这是聊天室的最后一个人的时候删除该房间
+                if(res.num-1==0){
+                    room.deleteOne({_id:data.roomId}).then(res=>{
+                        console.log(res);
+                        return;
+                    })
+                }
                 room.updateOne({_id:data.roomId},{num:res.num-1}).then(()=>{
                     let message = {
                         name: data.userName,
@@ -72,6 +79,7 @@ export default app => {
                     socket.broadcast.to(data.roomId).emit('chat_message',message);
                 })
             })
+            
             socket.leave(data.roomId);
         })
     })

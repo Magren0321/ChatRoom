@@ -2,13 +2,14 @@
 @import '~antd/dist/antd.css';
 
 .chatWrap{
-    height: 100vh;
     background-color: #000;
+    min-height: 100vh;
     .flex(center,flex-start);
     flex-direction: column; 
     .postWrap{
-        position: absolute;
-        bottom: 0;
+        position: fixed;
+        top: 0;
+        padding-top:10px; 
         .flex(flex-starrt,center);
         height: 118px;
         width: 100%;
@@ -34,9 +35,12 @@
     }
     .chatList{
         width: 80%;
-        margin-bottom: 118px;
+        margin-top: 118px;
+        background-color: #000;
         p{
-            color: #fff;
+            font-size: 18px;
+            word-wrap:break-word;
+            word-break:break-all;
         }
         div{
             padding: 10px;
@@ -45,18 +49,37 @@
 }
 
 .me{
-    width: 100%;
+    display: block;
+    width: 60%;
     text-align: right;
+    float: right;
+    .userName{
+        color: yellow;
+    }
+    .userMsg{
+        color: #fff;
+    }
 }
 .other{
-    width: 100%;
+    display: inline-block;
+    width: 60%;
     text-align: left;
+    .userName{
+        color: yellow;
+    }
+    .userMsg{
+        color: #fff;
+    }
 }
 
 .toast{
     width: 100%;
+    display: inline-block;
     text-align: center;
     .userName{
         display: none;
+    }
+    .userMsg{
+        color: #fff;
     }
 }
