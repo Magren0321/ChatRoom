@@ -40,7 +40,17 @@ const request  = {
             url: config.deleteUser+'?id='+id,
             method: 'post'
         })
-    }
+    },
+    /**
+     * 查询房间是否存在
+     * @param id 房间id
+     */
+    findRoom(id: string){
+        return axios({
+            url: config.findRoom+'?id='+id,
+            method: 'get'
+        })
+    },
 }
 
 export default request;

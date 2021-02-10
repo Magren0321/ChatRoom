@@ -28,6 +28,7 @@ class selectRoom extends Component<IProps> {
         roomList:[], //房间列表
         display: true, //是否显示“暂无房间”这句提示
         userName:'', //用户名字
+        toastError: false, //用于提示房间不存在
     }
 
     componentDidMount() {
@@ -117,7 +118,20 @@ class selectRoom extends Component<IProps> {
     }
     //跳转房间
     toRoom = (id: string) => {
-        this.props.history.replace('/chatroom/'+id);
+        api.findRoom(id).then(res=>{
+            console.log(res);
+            if(res.data.code===-1){
+                this.setState({
+                    toastError: true
+                });
+            }else{
+                this.props.history.replace('/chatroom/'+id);
+            }
+        })
+    }
+    //刷新页面
+    refresh = () =>{
+        window.location.reload();
     }
     render() {
         return (
@@ -125,6 +139,7 @@ class selectRoom extends Component<IProps> {
                <Modal title="创建房间" visible={this.state.isModalVisible} onOk={this.createRoom} onCancel={()=>this.changeModal(false)}>
                     <Input className='input' placeholder="房名（最长长度10个字符）" size="large" onChange={(e)=>this.inputChange(e)}/>   
                </Modal>
+               <Modal title='Error' visible={this.state.toastError} onOk={this.refresh} onCancel={this.refresh}>房间不存在</Modal>
                <div className='selectRoom'>
                    <div className = 'listWrap'>
                        <div className='detail'>
