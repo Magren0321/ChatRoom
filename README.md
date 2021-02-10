@@ -8,11 +8,15 @@
 # 🔨 Usage
 前端：
 > cd ChatRoom/chatroom
+
 > npm install
+
 > npm start
 后端：
 > cd ChatRoom/chatroomServe
+
 > npm install 
+
 > npm start
 
 # 🔍 Screenshot
