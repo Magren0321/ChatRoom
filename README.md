@@ -12,6 +12,7 @@
 > npm install
 
 > npm start
+
 后端：
 > cd ChatRoom/chatroomServe
 
